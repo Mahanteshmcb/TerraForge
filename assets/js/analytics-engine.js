@@ -252,3 +252,15 @@ const AnalyticsEngine = {
         };
     }
 };
+
+// Expose to global scope
+if (typeof window !== 'undefined') {
+    window.AnalyticsEngine = AnalyticsEngine;
+}
+
+// Initialize analytics engine
+if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => {
+        AnalyticsEngine.init();
+    });
+}

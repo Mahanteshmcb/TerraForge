@@ -237,6 +237,11 @@ const WorkflowEngine = {
     }
 };
 
+// Expose to global scope
+if (typeof window !== 'undefined') {
+    window.WorkflowEngine = WorkflowEngine;
+}
+
 // Initialize on module load
 if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {

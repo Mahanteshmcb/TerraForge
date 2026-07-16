@@ -420,6 +420,11 @@ const DataEngine = {
     }
 };
 
+// Expose to global scope
+if (typeof window !== 'undefined') {
+    window.DataEngine = DataEngine;
+}
+
 // Initialize data engine when module loads
 if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {
