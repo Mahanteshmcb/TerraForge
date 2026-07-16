@@ -1,0 +1,35 @@
+# Dependencies (none - this is a vanilla project!)
+# Version control
+.git/
+
+# Node (if using npm for build tools - optional)
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+.env.local
+.env.*.local
+
+# Build outputs (if any build process is added later)
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Misc
+.cache/
+
+# Deployment Doc
+DEPLOYMENT.md

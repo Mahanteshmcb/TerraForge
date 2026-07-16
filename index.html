@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TerraForge - The Ultimate Local-First Autonomous Campus & Eco-Automation Dashboard">
+    <title>TerraForge Nexus | Autonomous Campus Command Center</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="./assets/css/variables.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body class="light-theme">
+    
+    <!-- 🌟 LOADING SCREEN (Bonus Feature #1) -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader-container">
+            <svg class="spinner-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradientSpinner" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#0088ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#gradientSpinner)" stroke-width="3" class="spinner-outer"/>
+                <circle cx="50" cy="50" r="30" fill="none" stroke="url(#gradientSpinner)" stroke-width="2" class="spinner-inner"/>
+                <text x="50" y="57" text-anchor="middle" font-size="18" font-weight="bold" fill="url(#gradientSpinner)">TF</text>
+            </svg>
+            <p class="loading-text">Initializing TerraForge Nexus...</p>
+            <div class="boot-sequence">
+                <span class="boot-dot active"></span>
+                <span class="boot-dot"></span>
+                <span class="boot-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-left">
+            <div class="logo">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="5" width="30" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="15" cy="15" r="2" fill="currentColor"/>
+                    <circle cx="25" cy="15" r="2" fill="currentColor"/>
+                    <circle cx="15" cy="25" r="2" fill="currentColor"/>
+                    <circle cx="25" cy="25" r="2" fill="currentColor"/>
+                    <line x1="15" y1="15" x2="25" y2="25" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                </svg>
+                <span>TerraForge</span>
+            </div>
+            <h1>Campus Command Center</h1>
+        </div>
+
+        <div class="header-right">
+            <!-- SEARCH BAR (Bonus Feature #5) -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search systems, nodes, logs..." aria-label="Search">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </div>
+
+            <!-- THEME TOGGLE (Bonus Feature #2) -->
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light theme">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTAINER -->
+    <main class="dashboard-container">
+        
+        <!-- LEFT SIDEBAR: ZONE MAP (Bonus Feature #4) -->
+        <aside class="sidebar-left">
+            <section class="zone-map">
+                <h2>Estate Zones</h2>
+                <div class="zone-grid">
+                    <button class="zone-card" data-zone="robotics-bay">
+                        <span class="zone-icon">🤖</span>
+                        <span class="zone-label">Robotics Bay</span>
+                        <span class="zone-status online">●</span>
+                    </button>
+                    <button class="zone-card" data-zone="orchard-quad">
+                        <span class="zone-icon">🌳</span>
+                        <span class="zone-label">Orchard Quad</span>
+                        <span class="zone-status online">●</span>
+                    </button>
+                    <button class="zone-card" data-zone="solar-array">
+                        <span class="zone-icon">⚡</span>
+                        <span class="zone-label">Solar Array</span>
+                        <span class="zone-status online">●</span>
+                    </button>
+                    <button class="zone-card" data-zone="water-grid">
+                        <span class="zone-icon">💧</span>
+                        <span class="zone-label">Water Grid</span>
+                        <span class="zone-status online">●</span>
+                    </button>
+                    <button class="zone-card" data-zone="lab-center">
+                        <span class="zone-icon">🔬</span>
+                        <span class="zone-label">Lab Center</span>
+                        <span class="zone-status online">●</span>
+                    </button>
+                    <button class="zone-card" data-zone="storage-vault">
+                        <span class="zone-icon">🗄️</span>
+                        <span class="zone-label">Storage Vault</span>
+                        <span class="zone-status online">●</span>
+                    </button>
+                </div>
+            </section>
+        </aside>
+
+        <!-- CENTER GRID: DASHBOARD CARDS -->
+        <section class="dashboard-grid">
+            
+            <!-- TELEMETRY CARD -->
+            <article class="dashboard-card telemetry-card">
+                <div class="card-header">
+                    <h3>Active Zone Telemetry</h3>
+                    <span class="card-badge">Live</span>
+                </div>
+                <div id="telemetryPanel" class="telemetry-panel">
+                    <div class="telemetry-stat">
+                        <label>Zone Status</label>
+                        <p id="zoneStatus" style="color: #00ff88;">Select a zone</p>
+                    </div>
+                    <div class="telemetry-stat">
+                        <label>Efficiency Score</label>
+                        <div class="stat-bar">
+                            <div id="efficiencyBar" class="stat-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="efficiencyValue" style="color: #0088ff;">0%</span>
+                    </div>
+                    <div class="telemetry-stat">
+                        <label>Primary Metric 1</label>
+                        <p id="metricOne" style="color: #ffaa00;">-- </p>
+                    </div>
+                    <div class="telemetry-stat">
+                        <label>Primary Metric 2</label>
+                        <p id="metricTwo" style="color: #ffaa00;">-- </p>
+                    </div>
+                    <div class="telemetry-stat">
+                        <label>Active Alerts</label>
+                        <p id="alertCount" style="color: #ff3366;">0</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SYSTEM HEALTH CARD -->
+            <article class="dashboard-card system-health">
+                <div class="card-header">
+                    <h3>System Health</h3>
+                </div>
+                <div class="health-grid">
+                    <div class="health-metric">
+                        <span class="health-label">CPU Load</span>
+                        <div class="health-gauge">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--bg-secondary)" stroke-width="3"/>
+                                <circle id="cpuGauge" cx="50" cy="50" r="40" fill="none" stroke="var(--accent-neon)" stroke-width="3" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+                            </svg>
+                            <span id="cpuValue">0%</span>
+                        </div>
+                    </div>
+                    <div class="health-metric">
+                        <span class="health-label">Memory</span>
+                        <div class="health-gauge">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--bg-secondary)" stroke-width="3"/>
+                                <circle id="memGauge" cx="50" cy="50" r="40" fill="none" stroke="var(--accent-secondary)" stroke-width="3" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"/>
+                            </svg>
+                            <span id="memValue">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- IMAGE SLIDER (Bonus Feature #7) -->
+            <article class="dashboard-card slider-card">
+                <div class="card-header">
+                    <h3>System Diagnostics Feed</h3>
+                </div>
+                <div class="carousel-container">
+                    <div class="carousel-viewport">
+                        <div id="carouselTrack" class="carousel-track">
+                            <div class="carousel-slide" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem;">📡</span>
+                            </div>
+                            <div class="carousel-slide" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem;">🛡️</span>
+                            </div>
+                            <div class="carousel-slide" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem;">🌡️</span>
+                            </div>
+                            <div class="carousel-slide" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 3rem;">🔋</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev" id="prevSlide" aria-label="Previous slide">❮</button>
+                    <button class="carousel-btn next" id="nextSlide" aria-label="Next slide">❯</button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+            </article>
+
+            <!-- AUTOMATION NODES CARD -->
+            <article class="dashboard-card nodes-card">
+                <div class="card-header">
+                    <h3>Active Nodes</h3>
+                    <button id="addNodeBtn" class="btn-secondary" aria-label="Add node">+ Add Node</button>
+                </div>
+                <div id="nodesList" class="nodes-list">
+                    <div class="node-item" data-node="node-001">
+                        <div class="node-status online"></div>
+                        <div class="node-info">
+                            <span class="node-name">Node-001</span>
+                            <span class="node-type">Sensor Array</span>
+                        </div>
+                    </div>
+                    <div class="node-item" data-node="node-002">
+                        <div class="node-status online"></div>
+                        <div class="node-info">
+                            <span class="node-name">Node-002</span>
+                            <span class="node-type">Actuator Hub</span>
+                        </div>
+                    </div>
+                    <div class="node-item" data-node="node-003">
+                        <div class="node-status online"></div>
+                        <div class="node-info">
+                            <span class="node-name">Node-003</span>
+                            <span class="node-type">Control Unit</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- AUTOMATION WORKFLOW CARD -->
+            <article class="dashboard-card workflow-card">
+                <div class="card-header">
+                    <h3>Recent Automations</h3>
+                    <span class="card-badge" id="automationCount">0</span>
+                </div>
+                <div id="workflowLog" class="activity-log scroll-observe">
+                    <div class="log-entry" style="padding: 8px; font-size: 12px;">
+                        <p style="color: var(--text-tertiary); margin: 0;">Automations will appear here as workflows execute...</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- RECENT ACTIVITY CARD (with Scroll Effects - Bonus Feature #9) -->
+            <article class="dashboard-card activity-card">
+                <div class="card-header">
+                    <h3>System Activity Log</h3>
+                </div>
+                <div id="activityLog" class="activity-log scroll-observe">
+                    <div class="log-entry">
+                        <span class="log-time">Loading...</span>
+                        <span class="log-type info">INFO</span>
+                        <span class="log-msg">System initializing sensors...</span>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL: ADD AUTOMATION NODE (Bonus Feature #6 - Form Validation) -->
+    <div id="nodeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Provision New Automation Node</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <form id="nodeForm" class="node-form">
+                <div class="form-group">
+                    <label for="nodeName">Node Name *</label>
+                    <input type="text" id="nodeName" name="nodeName" required pattern="^Node-\d{3}$" placeholder="e.g., Node-004">
+                    <span class="error-msg" id="nameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="nodeType">Node Type *</label>
+                    <select id="nodeType" name="nodeType" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="Sensor Array">Sensor Array</option>
+                        <option value="Actuator Hub">Actuator Hub</option>
+                        <option value="Control Unit">Control Unit</option>
+                        <option value="Router">Router</option>
+                    </select>
+                    <span class="error-msg" id="typeError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="nodeIP">IP Address *</label>
+                    <input type="text" id="nodeIP" name="nodeIP" required placeholder="192.168.1.0">
+                    <span class="error-msg" id="ipError"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Provision Node</button>
+                    <button type="button" class="btn-secondary" id="cancelForm">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="./assets/js/storage.js"></script>
+    <script src="./assets/js/data-engine.js"></script>
+    <script src="./assets/js/workflow-engine.js"></script>
+    <script src="./assets/js/analytics-engine.js"></script>
+    <script src="./assets/js/dashboard.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+</body>
+</html>
