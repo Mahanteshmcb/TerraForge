@@ -16,15 +16,15 @@ const DataEngine = {
             name: 'Robotics Bay',
             type: 'automation',
             sensors: ['temperature', 'humidity', 'power-draw', 'vibration'],
-            targets: { temp: 22, humidity: 45, powerDraw: 15 },
-            thresholds: { temp: [15, 30], humidity: [30, 60], powerDraw: [0, 20] }
+            targets: { temperature: 22, humidity: 45, 'power-draw': 15 },
+            thresholds: { temperature: [15, 30], humidity: [30, 60], 'power-draw': [0, 20] }
         },
         'orchard-quad': {
             name: 'Orchard Quad',
             type: 'agriculture',
             sensors: ['soil-moisture', 'light-level', 'temperature', 'humidity', 'ph-level'],
-            targets: { soilMoisture: 65, lightLevel: 50000, temp: 24, humidity: 55, ph: 6.8 },
-            thresholds: { soilMoisture: [40, 80], lightLevel: [30000, 80000], temp: [18, 32], humidity: [40, 70], ph: [6.0, 7.5] }
+            targets: { 'soil-moisture': 65, 'light-level': 50000, temperature: 24, humidity: 55, 'ph-level': 6.8 },
+            thresholds: { 'soil-moisture': [40, 80], 'light-level': [30000, 80000], temperature: [18, 32], humidity: [40, 70], 'ph-level': [6.0, 7.5] }
         },
         'solar-array': {
             name: 'Solar Array',
@@ -37,22 +37,22 @@ const DataEngine = {
             name: 'Water Grid',
             type: 'irrigation',
             sensors: ['flow-rate', 'pressure', 'ph-level', 'chlorine', 'temperature'],
-            targets: { flowRate: 50, pressure: 3.5, ph: 7.0 },
-            thresholds: { flowRate: [0, 100], pressure: [2.0, 5.0], ph: [6.5, 7.5], chlorine: [0.2, 1.0], temperature: [10, 30] }
+            targets: { 'flow-rate': 50, pressure: 3.5, 'ph-level': 7.0, chlorine: 0.7, temperature: 20 },
+            thresholds: { 'flow-rate': [0, 100], pressure: [2.0, 5.0], 'ph-level': [6.5, 7.5], chlorine: [0.2, 1.0], temperature: [10, 30] }
         },
         'lab-center': {
             name: 'Lab Center',
             type: 'research',
             sensors: ['temperature', 'humidity', 'air-quality', 'contamination', 'equipment-status'],
-            targets: { temp: 21, humidity: 40, airQuality: 95 },
-            thresholds: { temperature: [18, 24], humidity: [35, 45], airQuality: [90, 100] }
+            targets: { temperature: 21, humidity: 40, 'air-quality': 95 },
+            thresholds: { temperature: [18, 24], humidity: [35, 45], 'air-quality': [90, 100] }
         },
         'storage-vault': {
             name: 'Storage Vault',
             type: 'storage',
             sensors: ['temperature', 'humidity', 'access-count', 'inventory-level'],
-            targets: { temp: 16, humidity: 30, inventoryLevel: 75 },
-            thresholds: { temperature: [10, 20], humidity: [20, 40], inventoryLevel: [50, 100] }
+            targets: { temperature: 16, humidity: 30, 'inventory-level': 75 },
+            thresholds: { temperature: [10, 20], humidity: [20, 40], 'inventory-level': [50, 100] }
         }
     },
 
@@ -75,13 +75,20 @@ const DataEngine = {
             
             config.sensors.forEach(sensorType => {
                 const realValue = this.generateRealisticValue(zoneId, sensorType);
+                const unit = this.getSensorUnit(sensorType);
+                const status = this.getStatusForValue(zoneId, sensorType, realValue);
+
                 this.sensors[zoneId][sensorType] = {
                     value: realValue,
-                    unit: this.getSensorUnit(sensorType),
+                    unit,
                     timestamp: Date.now(),
-                    status: this.getStatusForValue(zoneId, sensorType, realValue),
+                    status,
                     trend: 'stable'
                 };
+
+                if (status === 'alert') {
+                    this.createAlert(zoneId, sensorType, realValue, unit);
+                }
             });
         });
     },
@@ -94,6 +101,7 @@ const DataEngine = {
         const config = this.zoneConfigs[zoneId];
         const [minThreshold, maxThreshold] = config.thresholds[sensorType] || [0, 100];
         const target = config.targets[sensorType];
+        const safeTarget = target !== undefined ? target : Math.round((minThreshold + maxThreshold) / 2);
 
         // Realistic variations based on sensor type and time
         switch (sensorType) {
@@ -119,7 +127,7 @@ const DataEngine = {
             case 'light-level':
                 // Follows sun cycle
                 const lightFactor = Math.max(0, Math.sin((hour - 6) / 12 * Math.PI));
-                return Math.round(target * lightFactor + (Math.random() - 0.5) * 10000);
+                return Math.max(0, Math.round(target * lightFactor + (Math.random() - 0.5) * 10000));
             
             case 'power-draw':
                 // Peak during operational hours (8am-6pm)
@@ -312,8 +320,11 @@ const DataEngine = {
             'temperature-high': 'Increase cooling capacity or check ventilation system',
             'temperature-low': 'Enable heating system or check insulation',
             'soil-moisture-low': 'Trigger irrigation cycle immediately',
+            'light-level-low': 'Increase orchard lighting or inspect panels',
             'power-draw-high': 'Reduce non-essential systems or check for faults',
             'humidity-high': 'Activate dehumidification system',
+            'ph-level-low': 'Add neutralizing agent to water flow',
+            'chlorine-low': 'Add chlorine dose to water network',
             'flow-rate-low': 'Check water pump and pipeline pressure',
             'efficiency-low': 'Clean solar panels and check for obstructions'
         };

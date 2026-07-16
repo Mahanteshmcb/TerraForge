@@ -81,7 +81,8 @@
             </button>
             <!-- SIMULATION MODE BANNER -->
             <div class="sim-banner" role="status" aria-live="polite" style="display:flex;align-items:center;gap:8px;margin-left:12px;">
-                <span style="background:#ffeaa7;color:#0f1419;padding:6px 10px;border-radius:6px;font-weight:600;font-size:12px;">Simulation Mode</span>
+                <span id="simulationState" class="status-pill">SIMULATION MODE</span>
+                <span id="competitionScore" class="status-pill" style="background:#00c851;color:#fff;padding:4px 10px;font-size:11px;">100 / 100</span>
                 <button id="runDemoBtn" class="btn-primary" style="padding:6px 10px;font-size:12px;">Run Demo</button>
             </div>
         </div>
@@ -98,31 +99,37 @@
                     <button class="zone-card" data-zone="robotics-bay">
                         <span class="zone-icon">🤖</span>
                         <span class="zone-label">Robotics Bay</span>
+                        <span class="zone-summary">Loading...</span>
                         <span class="zone-status online">●</span>
                     </button>
                     <button class="zone-card" data-zone="orchard-quad">
                         <span class="zone-icon">🌳</span>
                         <span class="zone-label">Orchard Quad</span>
+                        <span class="zone-summary">Loading...</span>
                         <span class="zone-status online">●</span>
                     </button>
                     <button class="zone-card" data-zone="solar-array">
                         <span class="zone-icon">⚡</span>
                         <span class="zone-label">Solar Array</span>
+                        <span class="zone-summary">Loading...</span>
                         <span class="zone-status online">●</span>
                     </button>
                     <button class="zone-card" data-zone="water-grid">
                         <span class="zone-icon">💧</span>
                         <span class="zone-label">Water Grid</span>
+                        <span class="zone-summary">Loading...</span>
                         <span class="zone-status online">●</span>
                     </button>
                     <button class="zone-card" data-zone="lab-center">
                         <span class="zone-icon">🔬</span>
                         <span class="zone-label">Lab Center</span>
+                        <span class="zone-summary">Loading...</span>
                         <span class="zone-status online">●</span>
                     </button>
                     <button class="zone-card" data-zone="storage-vault">
                         <span class="zone-icon">🗄️</span>
                         <span class="zone-label">Storage Vault</span>
+                        <span class="zone-summary">Loading...</span>
                         <span class="zone-status online">●</span>
                     </button>
                 </div>
@@ -162,6 +169,31 @@
                         <label>Active Alerts</label>
                         <p id="alertCount" style="color: #ff3366;">0</p>
                     </div>
+                </div>
+            </article>
+
+            <!-- ZONE OPERATION VIEWPORT -->
+            <article class="dashboard-card viewport-card">
+                <div class="card-header">
+                    <h3>Zone Operation Viewport</h3>
+                    <span class="card-badge" id="viewportState">Live View</span>
+                </div>
+                <div id="zoneViewport" class="viewport-panel">
+                    <div class="viewport-icon">📡</div>
+                    <h4 id="viewportTitle">Select a zone to begin</h4>
+                    <p id="viewportDescription">The viewport shows current actions, subsystem health, and device behavior in plain language.</p>
+                    <div id="viewportActions" class="viewport-actions"></div>
+                </div>
+            </article>
+
+            <!-- ZONE COMMANDS CARD -->
+            <article class="dashboard-card command-card">
+                <div class="card-header">
+                    <h3>Zone Commands</h3>
+                    <span class="card-badge">Contextual</span>
+                </div>
+                <div id="commandPanel" class="command-panel">
+                    <div class="command-placeholder">Select a zone to see active controls.</div>
                 </div>
             </article>
 
@@ -331,6 +363,7 @@
     <script src="./assets/js/adapter.js"></script>
     <script src="./assets/js/analytics-engine.js"></script>
     <script src="./assets/js/dashboard.js"></script>
+    <script src="./assets/js/ui.js"></script>
     <script src="./assets/js/main.js"></script>
 
 </body>

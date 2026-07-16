@@ -289,8 +289,8 @@ body {
 .zone-card {
     background: var(--bg-primary);
     border: 2px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
+    border-radius: calc(var(--radius-lg) + 4px);
+    padding: calc(var(--spacing-md) + 6px);
     cursor: pointer;
     text-align: center;
     transition: all var(--transition-base);
@@ -305,8 +305,8 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
-    animation: shimmer 3s infinite;
+    background: linear-gradient(90deg, transparent, rgba(0, 230, 118, 0.14), transparent);
+    animation: shimmer 6s infinite linear;
 }
 
 .zone-card:hover {
@@ -323,9 +323,33 @@ body {
 }
 
 .zone-icon {
-    font-size: 24px;
+    font-size: 26px;
     display: block;
     margin-bottom: var(--spacing-xs);
+}
+
+/* ICON UTILS */
+.icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    opacity: 0.95;
+}
+
+/* RIPPLE EFFECT */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: rgba(0,0,0,0.06);
+    animation: ripple 600ms linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to { transform: scale(4); opacity: 0; }
 }
 
 .zone-label {
@@ -824,14 +848,14 @@ body {
 }
 
 .btn-primary {
-    background: var(--accent-neon);
+    background: linear-gradient(90deg, rgba(0,230,118,1), rgba(0,200,120,0.95));
     color: #0f1419;
     flex: 1;
 }
 
 .btn-primary:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 230, 118, 0.18);
 }
 
 .btn-secondary {
@@ -844,6 +868,108 @@ body {
 .btn-secondary:hover {
     border-color: var(--accent-neon);
     color: var(--accent-neon);
+}
+
+.command-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.command-btn {
+    min-height: 48px;
+    border-radius: var(--radius-lg);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.command-btn:hover {
+    transform: translateY(-1px);
+}
+
+.command-placeholder {
+    color: var(--text-tertiary);
+    padding: 18px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.viewport-card {
+    min-height: 240px;
+}
+
+.viewport-panel {
+    display: grid;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-lg);
+    min-height: 180px;
+}
+
+.viewport-icon {
+    font-size: 2.5rem;
+    display: block;
+    opacity: 0.85;
+}
+
+.viewport-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.viewport-bullet {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--bg-secondary);
+    color: var(--accent-neon);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.alert-note {
+    color: #ff7a7a;
+}
+
+#viewportState.healthy {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+}
+
+#viewportState.warning {
+    background: rgba(255, 51, 102, 0.14);
+    color: #ff3366;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: rgba(0, 255, 136, 0.14);
+    color: #00ff88;
+}
+
+.status-pill.active {
+    background: rgba(255, 170, 0, 0.18);
+    color: #ffd166;
+}
+
+.command-card {
+    min-height: 220px;
 }
 
 /* ==================== ANIMATIONS ==================== */

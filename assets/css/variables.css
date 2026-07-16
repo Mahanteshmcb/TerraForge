@@ -28,8 +28,8 @@
     /* SPACING */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
+    --spacing-md: 18px;
+    --spacing-lg: 28px;
     --spacing-xl: 32px;
     --spacing-2xl: 48px;
     
@@ -40,7 +40,7 @@
     --font-size-base: 14px;
     --font-size-md: 16px;
     --font-size-lg: 18px;
-    --font-size-xl: 20px;
+         --font-size-base: 15px;
     --font-size-2xl: 24px;
     --font-size-3xl: 32px;
     
@@ -53,7 +53,7 @@
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
-    --radius-xl: 16px;
+    --radius-xl: 18px;
     --radius-full: 9999px;
     
     /* Z-INDEX */
@@ -66,7 +66,7 @@
 .dark-theme {
     --bg-primary: #0f1419;
     --bg-secondary: #1a1f2e;
-    --bg-tertiary: #252d3d;
+         --accent-neon: #00e676;
     --text-primary: #e8ecf1;
     --text-secondary: #a0a9be;
     --text-tertiary: #6b7280;
