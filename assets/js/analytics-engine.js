@@ -257,10 +257,3 @@ const AnalyticsEngine = {
 if (typeof window !== 'undefined') {
     window.AnalyticsEngine = AnalyticsEngine;
 }
-
-// Initialize analytics engine
-if (typeof window !== 'undefined') {
-    window.addEventListener('DOMContentLoaded', () => {
-        AnalyticsEngine.init();
-    });
-}
