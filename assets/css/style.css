@@ -255,7 +255,7 @@ body {
 /* ==================== MAIN DASHBOARD ==================== */
 .dashboard-container {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: minmax(260px, 340px) 1fr;
     gap: var(--spacing-md);
     padding: var(--spacing-lg);
     max-width: 1600px;
@@ -282,7 +282,7 @@ body {
 
 .zone-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--spacing-sm);
 }
 
@@ -290,12 +290,16 @@ body {
     background: var(--bg-primary);
     border: 2px solid var(--border-color);
     border-radius: calc(var(--radius-lg) + 4px);
-    padding: calc(var(--spacing-md) + 6px);
+    padding: calc(var(--spacing-md) + 10px);
     cursor: pointer;
-    text-align: center;
     transition: all var(--transition-base);
     position: relative;
     overflow: hidden;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .zone-card::before {
@@ -323,9 +327,17 @@ body {
 }
 
 .zone-icon {
-    font-size: 26px;
+    font-size: 32px;
     display: block;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.zone-summary {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0.9;
+    margin-top: var(--spacing-xs);
+    color: var(--text-tertiary);
 }
 
 /* ICON UTILS */
@@ -718,6 +730,43 @@ body {
 
 .log-msg {
     color: var(--text-secondary);
+}
+
+.usecase-card {
+    min-height: 220px;
+}
+
+.usecase-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    color: var(--text-secondary);
+}
+
+.usecase-panel p {
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.7;
+}
+
+.usecase-list {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    gap: var(--spacing-sm);
+}
+
+.usecase-list li {
+    position: relative;
+    padding-left: 26px;
+    line-height: 1.6;
+}
+
+.usecase-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-neon);
 }
 
 /* ==================== MODAL ==================== */
