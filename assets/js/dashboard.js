@@ -110,18 +110,24 @@ const Dashboard = {
                 if (sensors['flow-rate']) updateSensor('flow-rate', Math.max(50, sensors['flow-rate'].value + 20));
                 return `Irrigation started in ${DataEngine.zoneConfigs[zoneId].name}.`;
             case 'boost-light':
-                updateSensor('light-level', 78000);
-                if (sensors['air-quality']) updateSensor('air-quality', Math.min(100, sensors['air-quality'].value + 3));
-                return `Lighting increased for ${DataEngine.zoneConfigs[zoneId].name}.`;
+                if (sensors['light-level']) updateSensor('light-level', 78000);
+                if (sensors['air-quality']) updateSensor('air-quality', Math.min(100, sensors['air-quality'].value + 6));
+                if (sensors['contamination']) updateSensor('contamination', Math.max(0, (sensors['contamination'].value || 10) - 4));
+                return `Air systems tuned in ${DataEngine.zoneConfigs[zoneId].name}.`;
             case 'deploy-patrol':
-                updateSensor('vibration', 3);
+                updateSensor('vibration', Math.min(6, (sensors['vibration']?.value || 1) + 2));
                 if (sensors['power-draw']) updateSensor('power-draw', Math.min(25, sensors['power-draw'].value + 3));
                 return `Security patrol deployed in ${DataEngine.zoneConfigs[zoneId].name}.`;
             case 'optimize-solar':
-                updateSensor('efficiency', 96);
-                updateSensor('current', Math.min(150, (sensors['current']?.value || 80) + 15));
-                updateSensor('voltage', 490);
-                return `Solar output optimized for ${DataEngine.zoneConfigs[zoneId].name}.`;
+                if (zoneId === 'solar-array') {
+                    updateSensor('efficiency', 96);
+                    updateSensor('current', Math.min(150, (sensors['current']?.value || 80) + 15));
+                    updateSensor('voltage', 490);
+                } else {
+                    if (sensors['power-draw']) updateSensor('power-draw', Math.max(8, sensors['power-draw'].value - 4));
+                    if (sensors['vibration']) updateSensor('vibration', Math.max(0, sensors['vibration'].value - 1));
+                }
+                return `Power systems optimized for ${DataEngine.zoneConfigs[zoneId].name}.`;
             case 'balance-water':
                 updateSensor('ph-level', 7.0);
                 updateSensor('chlorine', 0.7);
@@ -129,11 +135,13 @@ const Dashboard = {
             case 'stabilize-climate':
                 updateSensor('temperature', 21);
                 if (sensors['humidity']) updateSensor('humidity', 42);
+                if (sensors['air-quality']) updateSensor('air-quality', Math.min(100, (sensors['air-quality']?.value || 80) + 3));
                 return `Climate stabilized in ${DataEngine.zoneConfigs[zoneId].name}.`;
             case 'seal-access':
-                updateSensor('access-count', 0);
+                if (sensors['access-count']) updateSensor('access-count', 0);
                 if (sensors['inventory-level']) updateSensor('inventory-level', Math.max(60, sensors['inventory-level'].value));
-                return `Access sealed in ${DataEngine.zoneConfigs[zoneId].name}.`;
+                if (sensors['efficiency']) updateSensor('efficiency', Math.min(100, (sensors['efficiency'].value || 88) + 4));
+                return `Security and stability improved for ${DataEngine.zoneConfigs[zoneId].name}.`;
             case 'resolve-alerts':
                 DataEngine.getActiveAlerts().forEach(alert => DataEngine.resolveAlert(alert.id));
                 return `All active alerts resolved.`;
@@ -264,11 +272,11 @@ const Dashboard = {
                 break;
             case 'robotics-bay':
                 commands.push({ id: 'deploy-patrol', label: 'Deploy Patrol', description: 'Send automated rovers through the bay.' });
-                commands.push({ id: 'optimize-solar', label: 'Sync Power', description: 'Balance power and drone systems.' });
+                commands.push({ id: 'stabilize-climate', label: 'Calibrate Systems', description: 'Tune temperature and vibration levels.' });
                 break;
             case 'solar-array':
                 commands.push({ id: 'optimize-solar', label: 'Maximize Output', description: 'Tune panels for peak solar production.' });
-                commands.push({ id: 'seal-access', label: 'Secure Field', description: 'Lock down access to the solar field.' });
+                commands.push({ id: 'seal-access', label: 'Shield Array', description: 'Secure and stabilize solar field systems.' });
                 break;
             case 'water-grid':
                 commands.push({ id: 'balance-water', label: 'Tune Water Quality', description: 'Adjust pH and flow across the network.' });
@@ -647,28 +655,44 @@ const Dashboard = {
      * Simulate live telemetry updates from REAL sensor data
      */
     simulateTelemetry() {
-        // Update system health gauges with REAL data
+        // Update system health gauges with real, dynamic data
         const updateGauges = () => {
-            // Get real CPU and memory from solar + robotics bay
             const roboticsBay = DataEngine.sensors['robotics-bay'];
             const solarArray = DataEngine.sensors['solar-array'];
-            
-            if (roboticsBay && solarArray) {
-                const cpuLoad = (roboticsBay['power-draw']?.value || 0) / 20 * 100;
-                const memUsage = (solarArray['efficiency']?.value || 0);
+            const waterGrid = DataEngine.sensors['water-grid'];
 
-                document.getElementById('cpuValue').textContent = Math.round(cpuLoad) + '%';
-                document.getElementById('memValue').textContent = Math.round(memUsage) + '%';
+            let cpuLoad = 18;
+            let memUsage = 28;
 
-                const circumference = 251.2;
-                const cpuOffset = circumference - (cpuLoad / 100) * circumference;
-                const memOffset = circumference - (memUsage / 100) * circumference;
-
-                document.getElementById('cpuGauge').style.strokeDashoffset = cpuOffset;
-                document.getElementById('memGauge').style.strokeDashoffset = memOffset;
+            if (roboticsBay) {
+                cpuLoad = Math.min(98, Math.max(18, (roboticsBay['power-draw']?.value || 10) * 3 + (roboticsBay['vibration']?.value || 0) * 4));
+            }
+            if (solarArray) {
+                memUsage = Math.min(92, Math.max(18, (solarArray['efficiency']?.value || 60) * 0.8 + ((waterGrid?.['flow-rate']?.value || 40) * 0.1)));
             }
 
-            // Update active zone panel, viewport, and zone summaries if a zone is selected
+            cpuLoad = Math.round(cpuLoad + (Math.sin(Date.now() / 2500) * 5));
+            memUsage = Math.round(memUsage + (Math.cos(Date.now() / 3300) * 4));
+
+            const displayCpu = Math.min(100, Math.max(10, cpuLoad));
+            const displayMem = Math.min(100, Math.max(18, memUsage));
+
+            const cpuLabel = document.getElementById('cpuValue');
+            const memLabel = document.getElementById('memValue');
+            const cpuGauge = document.getElementById('cpuGauge');
+            const memGauge = document.getElementById('memGauge');
+
+            if (cpuLabel) cpuLabel.textContent = `${displayCpu}%`;
+            if (memLabel) memLabel.textContent = `${displayMem}%`;
+
+            const circumference = 251.2;
+            if (cpuGauge) cpuGauge.style.strokeDashoffset = circumference - (displayCpu / 100) * circumference;
+            if (memGauge) memGauge.style.strokeDashoffset = circumference - (displayMem / 100) * circumference;
+
+            // Keep a cached value for diagnostics and future health calculations
+            this.currentCpuLoad = displayCpu;
+            this.currentMemUsage = displayMem;
+
             if (this.currentZone) {
                 const zoneData = DataEngine.getZoneData(this.currentZone);
                 document.getElementById('efficiencyBar').style.width = zoneData.efficiency + '%';
