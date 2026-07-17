@@ -33,4 +33,7 @@ npm-debug.log*
 
 # Deployment Doc
 DEPLOYMENT.md
+TESTING_REPORT.md
+COMPETITION_PITCH.md
+PRODUCTION_REPORT.md
 .vercel
